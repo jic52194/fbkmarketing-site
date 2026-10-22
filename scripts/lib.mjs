@@ -91,7 +91,7 @@ ${schemas.map(ld).join("")}
 </div>
 <p class="copy">© ${TODAY.slice(0, 4)} FBK Marketing. All rights reserved. · <a href="#" onclick="window.dispatchEvent(new Event('cso:consent-open'));return false">Cookie settings</a></p>
 </div></footer>
-<script src="/assets/t.js" data-site="fbkmarketing" data-banner="1" defer></script>
+<script src="/assets/t.js" data-site="fbkmarketing" data-privacy="/privacy-policy" data-banner="1" defer></script>
 ${chat ? CHAT : ""}
 </body></html>`;
 }
