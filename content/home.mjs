@@ -41,7 +41,7 @@ export const home = () => `
 <p class="eyebrow">Social Media Fulfillment</p>
 <h1>FBK Marketing <span class="h1sub">Done-for-you social media fulfillment</span></h1>
 <p class="lede">FBK Marketing is a fulfillment-first, done-for-you social media system for business owners and operators who cannot afford inconsistency. Owned and operated by RAIBRO LLC. Built on CasperPortal infrastructure so your marketing doesn’t just look active — it creates conversations, captures leads, and pushes prospects toward action.</p>
-<p class="ctas">${btn("Get Started at $1,990/month", "/get-started")}${btn("Why This Works", "/why-social-media-fulfillment", "ghost")}</p>
+<p class="ctas">${btn("Get Started at $1,990/month", "/get-started", "", "hero")}${btn("Why This Works", "/why-social-media-fulfillment", "ghost", "hero")}</p>
 <p class="tags"><span>Built for busy operators.</span><span>Remote service · United States.</span><span>Local relevance: Georgetown MA.</span></p>
 </div>
 <div class="hero-art"><img src="/img/logo-512.png" width="512" height="512" alt="FBK Marketing brand mark" fetchpriority="high"></div>
@@ -58,7 +58,7 @@ export const home = () => `
 <h2>Done-For-You Social Media Content for $1,990/month</h2>
 <p>Get done-for-you social media content for $1,990/month. You get a consistent posting cadence, clean brand voice alignment, and a system you can keep running without becoming a content factory.</p>
 <div class="offer"><p class="eyebrow">Offer</p><p><b>Done-for-you social media content: $1,990/month.</b></p><p class="small">Month-to-month · No long-term contract · <a href="/1990-pricing-explanation">What the price covers</a></p>
-<p class="ctas">${btn("Order Now: $1,990/month", "/get-started")}${btn("See Why", "/why-social-media-fulfillment", "ghost")}</p></div>
+<p class="ctas">${btn("Get Started at $1,990/month", "/get-started", "", "offer")}${btn("See Why", "/why-social-media-fulfillment", "ghost")}</p></div>
 </div>
 <div class="figs">${figure("strategy-session", "Business team marketing strategy session for Georgetown Massachusetts companies by FBK Marketing", "Strategy without overhead")}${figure("partnership-handshake", "Trusted marketing partnership handshake for Georgetown MA businesses with FBK Marketing", "Trust-first partnership")}</div>
 </div></section>
@@ -100,7 +100,7 @@ ${COMPARE.map(([o, g, r], i) => `<tr${i === 3 ? ' class="hl"' : ""}><th scope="r
 <h2>FAQ</h2>
 <p class="eyebrow">Fast Links</p>
 <p>If you want the long-form answers, use the <a href="/faq">FAQ page</a>. If you’re ready, go to <a href="/get-started">Get Started</a>.</p>
-<p class="ctas">${btn("Open FAQ", "/faq", "ghost")}${btn("Get Started at $1,990/month", "/get-started")}</p>
+<p class="ctas">${btn("Open FAQ", "/faq", "ghost")}${btn("Get Started at $1,990/month", "/get-started", "", "faq")}</p>
 <h3>Best Fit</h3>
 ${list(["Busy operators who need consistency.", "Service businesses that sell trust.", "Local businesses (including Georgetown MA)."])}
 <h3>Competitive Threats</h3>

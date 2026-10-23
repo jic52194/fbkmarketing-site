@@ -2,7 +2,7 @@
 import { fileURLToPath } from "node:url";
 import { rmSync, mkdirSync, cpSync, writeFileSync, readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
-import { SITE, OUT, TODAY, EMAIL, PHONE, PHONE_TEL, ORDER_URL, FORM, SURVEY, FORMS, AFFILIATE_SURVEY, urls, write, page, esc, btn, list, embed, related, faqSchema, redirect } from "./lib.mjs";
+import { SITE, OUT, TODAY, EMAIL, PHONE, PHONE_TEL, ORDER_URL, FORM, SURVEY, FORMS, AFFILIATE_SURVEY, urls, write, page, esc, btn, list, embed, related, faqSchema, redirect, PRIMARY, TRUST } from "./lib.mjs";
 import { home, homeSchema } from "../content/home.mjs";
 
 const C = JSON.parse(readFileSync(new URL("../content/pages.json", import.meta.url), "utf8"));
@@ -98,9 +98,9 @@ const ctaHref = (href) => (href === "/request-quote" ? "/get-started" : href); /
 
 function templatePage(slug, [title, desc, answer], parent, siblings) {
   const p = C[slug];
-  const body = `<section class="hero light"><div class="wrap narrow"><h1>${esc(p.h1)}</h1><p class="lede">${esc(answer)}</p>${p.intro.map((x) => `<p class="lede">${esc(x)}</p>`).join("")}</div></section>
-<section class="sec"><div class="wrap"><div class="features">${p.sections.map((s) => `<article class="feature"><h2>${esc(s.h2)}</h2>${s.p.map((x) => `<p>${esc(x)}</p>`).join("")}${list(s.li)}${s.cta ? `<p>${btn(s.cta[0], ctaHref(s.cta[1]))}</p>` : ""}</article>`).join("")}</div></div></section>
-${p.closing ? `<section class="sec band"><div class="wrap narrow"><h2>${esc(p.closing.h2)}</h2>${p.closing.p.map((x) => `<p>${esc(x)}</p>`).join("")}<p>${btn(p.closing.cta[0], ctaHref(p.closing.cta[1]))} ${btn("Contact Us", "/contact", "ghost light")}</p></div></section>` : ""}
+  const body = `<section class="hero light"><div class="wrap narrow"><h1>${esc(p.h1)}</h1><p class="lede">${esc(answer)}</p>${p.intro.map((x) => `<p class="lede">${esc(x)}</p>`).join("")}<p class="ctas">${btn(...PRIMARY, "", "hero")}${btn("Contact Us", "/contact", "ghost", "hero")}</p>${TRUST}</div></section>
+<section class="sec"><div class="wrap"><div class="features">${p.sections.map((s) => `<article class="feature"><h2>${esc(s.h2)}</h2>${s.p.map((x) => `<p>${esc(x)}</p>`).join("")}${list(s.li)}</article>`).join("")}</div></div></section>
+${p.closing ? `<section class="sec band"><div class="wrap narrow"><h2>${esc(p.closing.h2)}</h2>${p.closing.p.map((x) => `<p>${esc(x)}</p>`).join("")}<p class="ctas">${btn(p.closing.cta[0], ctaHref(p.closing.cta[1]), "", "closing")}${btn("Contact Us", "/contact", "ghost light", "closing")}</p>${TRUST}</div></section>` : ""}
 ${related("Related questions", siblings.map((k) => [C[k].h1, blurb(k), "/" + k]), parent[0] === "FAQ"
     ? `See every answer on the <a href="/faq">social media fulfillment FAQ</a> or the twelve <a href="/why-social-media-fulfillment">reasons businesses hand off social media</a>.`
     : `See all twelve <a href="/why-social-media-fulfillment">reasons businesses hand off social media</a> or the <a href="/faq">social media fulfillment FAQ</a>.`)}`;
@@ -114,7 +114,7 @@ for (const k of Object.keys(CONCERN)) templatePage(k, CONCERN[k], ["Why Fulfillm
   const p = C["why-social-media-fulfillment"];
   const body = `<section class="hero light"><div class="wrap narrow"><h1>${esc(p.h1)}</h1><p class="lede">This page is for business owners deciding whether to hand off social media: it covers the twelve most common concerns and how FBK Marketing’s done-for-you social media fulfillment addresses each one.</p></div></section>
 <section class="sec"><div class="wrap"><div class="cards c3">${p.cards.map((c) => `<div class="card"><h2 class="h3"><a href="${c.href}">${esc(c.h2)}</a></h2><p>${esc(c.p)}</p><p class="more"><a href="${c.href}" aria-label="Learn more: ${esc(c.h2)}">Learn More</a> · <a href="/get-started">Get Started</a></p></div>`).join("")}</div></div></section>
-<section class="sec band"><div class="wrap narrow"><h2>${esc(p.closing.h2)}</h2><p>${esc(p.closing.p)}</p><p>${btn("Get Started at $1,990/month", "/get-started")} ${btn("Read the FAQ", "/faq", "ghost light")}</p></div></section>`;
+<section class="sec band"><div class="wrap narrow"><h2>${esc(p.closing.h2)}</h2><p>${esc(p.closing.p)}</p><p class="ctas">${btn(...PRIMARY, "", "closing")}${btn("Read the FAQ", "/faq", "ghost light", "closing")}</p>${TRUST}</div></section>`;
   write("/why-social-media-fulfillment", page({ path: "/why-social-media-fulfillment", title: "Why Businesses Need Social Media Fulfillment | FBK Marketing",
     desc: "Why consistent, done-for-you social content matters and how FBK Marketing keeps your brand active and credible.", body, crumbs: [["Home", "/"], ["Why Fulfillment", "/why-social-media-fulfillment"]] }));
 }
@@ -125,7 +125,7 @@ for (const k of Object.keys(CONCERN)) templatePage(k, CONCERN[k], ["Why Fulfillm
   const items = p.items.map((q) => [q.q, q.a, q.href]);
   const body = `<section class="hero light"><div class="wrap narrow"><h1>${esc(p.h1)}</h1><p class="lede">Short answers about FBK Marketing’s done-for-you social media service, with a link to the full page for each.</p></div></section>
 <section class="sec"><div class="wrap narrow"><div class="faq">${items.map(([q, a, h]) => `<details open><summary>${esc(q)}</summary><p>${esc(a)} <a href="${h}">Learn more<span class="sr">: ${esc(q)}</span></a></p></details>`).join("")}</div></div></section>
-<section class="sec band"><div class="wrap narrow"><h2>${esc(p.closing.q)}</h2><p>${esc(p.closing.a)}</p><p>${btn("Get Started at $1,990/month", "/get-started")} ${btn("Contact Us", "/contact", "ghost light")}</p></div></section>`;
+<section class="sec band"><div class="wrap narrow"><h2>${esc(p.closing.q)}</h2><p>${esc(p.closing.a)}</p><p class="ctas">${btn(...PRIMARY, "", "closing")}${btn("Contact Us", "/contact", "ghost light", "closing")}</p>${TRUST}</div></section>`;
   write("/faq", page({ path: "/faq", title: "Social Media Fulfillment FAQ | FBK Marketing",
     desc: "Answers about FBK Marketing's done-for-you social media service: platforms, content, approvals, posting, reporting and cancellation.", body,
     schema: [faqSchema(items.map(([q, a]) => [q, a]))], crumbs: [["Home", "/"], ["FAQ", "/faq"]] }));
@@ -148,11 +148,12 @@ write("/get-started", page({ path: "/get-started", noindex: true, chat: false, t
   body: `<section class="sec checkout"><div class="wrap narrow">
 <h1>Effortless Social Media Content for Business Owners</h1>
 <p class="center">This is the order page for FBK Marketing’s done-for-you social media content for business owners, at $1,990 per month.</p>
-<p class="center"><a class="btn" href="/why-social-media-fulfillment">Click to learn more...</a></p>
 <h2 class="h3 center">Who is Claiming This Offer?</h2><p class="center">Provide Your Business Details for Customized Content Creation</p>
+<p class="center small">Month-to-month, no long-term contract · cancel with 30 days’ notice · approve every post or choose auto-post.</p>
 <p class="center small">Order: done-for-you social media, $1,990 per month. By ordering you agree to the <a href="/terms-and-conditions">terms and conditions</a>; see also the <a href="/cancellation-policy">cancellation policy</a>.</p>
 <div class="embed order"><iframe src="${ORDER_URL}" title="FBK Marketing secure order form" style="min-height:1250px" allow="payment"></iframe></div>
 <p class="center small">* 100% Secure &amp; Safe Payments * · Trouble loading the form? <a href="${ORDER_URL}" rel="noopener">Open the secure order form</a> or <a href="/contact">contact us</a>.</p>
+<p class="center small">Questions first? <a href="/why-social-media-fulfillment">Click to learn more</a>, read the <a href="/faq">FAQ</a> or see <a href="/1990-service-details">what the service includes</a>.</p>
 </div></section>` }));
 
 // ── Funnel steps after checkout / affiliate sign-up (kept at their old URLs, noindex) ──

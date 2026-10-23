@@ -43,7 +43,7 @@ export const ORG = { "@context": "https://schema.org", "@type": "Organization", 
   sameAs: ["https://www.youtube.com/@FBKMarketing", "https://www.facebook.com/fbkmarketing"],
   creator: CASPERB2B };
 
-export const NAV = [["Offer", "/#offer"], ["System", "/#system"], ["Why fulfillment", "/why-social-media-fulfillment"], ["FAQ", "/faq"], ["Contact", "/contact"]];
+export const NAV = [["Pricing", "/#offer"], ["System", "/#system"], ["Why fulfillment", "/why-social-media-fulfillment"], ["FAQ", "/faq"], ["Contact", "/contact"]];
 
 export const urls = []; // [path, lastmod] for the sitemap (indexable pages only)
 
@@ -81,15 +81,15 @@ ${schemas.map(ld).join("")}
 <header class="top"><div class="wrap bar">
 <a class="brand" href="/"><img src="/img/logo-160.webp" width="44" height="44" alt="FBK Marketing logo"><span>FBK Marketing</span></a>
 <nav class="nav" aria-label="Main">${NAV.map(navLink).join("")}</nav>
-<a class="btn sm" href="/get-started">Get Started</a>
-<details class="menu"><summary aria-label="Open menu">Menu</summary><nav aria-label="Mobile">${NAV.map(navLink).join("")}<a href="/get-started">Get Started</a></nav></details>
+<a class="btn sm" href="/get-started" data-track="Get Started [header]">Get Started</a>
+<details class="menu"><summary aria-label="Open menu">Menu</summary><nav aria-label="Mobile">${NAV.map(navLink).join("")}<a href="/get-started" data-track="Get Started [menu]">Get Started</a></nav></details>
 </div></header>
 <main id="main">${crumbs && crumbs.length > 1 ? `<div class="wrap"><nav class="crumbs" aria-label="Breadcrumb">${crumbs.map(([n, p], i) => (i < crumbs.length - 1 ? `<a href="${p}">${esc(n)}</a>` : `<span aria-current="page">${esc(n)}</span>`)).join(" › ")}</nav></div>` : ""}${body}</main>
 <footer class="foot"><div class="wrap">
 <div class="cols">
 <div><p class="fbrand">FBK Marketing</p><p>United States · Remote Service<br>Owned by RAIBRO LLC</p><p>Done-for-you social content to stay consistent.</p>
 <p><a href="mailto:${EMAIL}">${EMAIL}</a><br><a href="tel:${PHONE_TEL}">${PHONE}</a></p></div>
-<div><p class="fh">Get Started</p><ul><li><a href="/get-started">Sign Up</a></li><li><a href="/contact">Contact</a></li><li><a href="/terms-and-conditions">Terms</a></li><li><a href="/privacy-policy">Privacy</a></li></ul></div>
+<div><p class="fh">Get Started</p><ul><li><a href="/get-started" data-track="Get Started [footer]">Get Started at $1,990/month</a></li><li><a href="/contact">Contact</a></li><li><a href="/terms-and-conditions">Terms</a></li><li><a href="/privacy-policy">Privacy</a></li></ul></div>
 <div><p class="fh">Learn</p><ul><li><a href="/why-social-media-fulfillment">Why Fulfillment</a></li><li><a href="/why-choose-fbkmarketing">Why FBK Marketing</a></li><li><a href="/faq">FAQ</a></li><li><a href="/platforms-managed">Platforms</a></li><li><a href="/cancellation-policy">Cancellation policy</a></li></ul></div>
 <div><p class="fh">Affiliates</p><ul><li><a href="/join">Join Program</a></li><li><a href="/affiliate-terms-and-conditions">Affiliate Terms</a></li><li><a href="https://fbkmarketing.app.clientclub.net/login" rel="noopener">Affiliate Login</a></li></ul></div>
 <div><p class="fh">CasperPortal</p><ul><li><a href="https://login.casperportal.net/" rel="noopener">Customer Login</a></li><li><a href="https://casperportal.com" rel="noopener">Sign Up</a></li></ul></div>
@@ -102,7 +102,11 @@ ${chat ? CHAT : ""}
 }
 
 // ── building blocks ──
-export const btn = (label, href, cls = "") => `<a class="btn${cls ? " " + cls : ""}" href="${href}"${href.startsWith("http") ? ' rel="noopener"' : ""}>${esc(label)}</a>`;
+/** Button link. `track` names where it sits (hero, closing, sticky…); t.js then logs clicks as "<label> [<track>]". */
+export const btn = (label, href, cls = "", track = "") => `<a class="btn${cls ? " " + cls : ""}" href="${href}"${href.startsWith("http") ? ' rel="noopener"' : ""}${track ? ` data-track="${esc(label)} [${esc(track)}]"` : ""}>${esc(label)}</a>`;
+/** The primary call to action and the facts the site already states about it (home offer box, cancellation policy, content control). */
+export const PRIMARY = ["Get Started at $1,990/month", "/get-started"];
+export const TRUST = `<p class="small trust">$1,990/month · Month-to-month, no long-term contract · <a href="/cancellation-policy">Cancel with 30 days’ notice</a> · Approve every post or choose auto-post</p>`;
 export const list = (items) => `<ul class="checks">${items.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>`;
 /** Responsive WebP image from static/img (name-lg.webp and, for big images, name-sm.webp). */
 export const IMG = {

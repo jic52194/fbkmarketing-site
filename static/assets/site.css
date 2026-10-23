@@ -68,6 +68,9 @@ p{margin:0 0 1em}
 .sec.band{background:var(--navy);color:#e9e9f5}
 .sec.band h2{color:#fff}
 .lead-in{font-size:1.08rem;color:var(--muted);max-width:760px}
+.trust{margin:-.4em 0 1em}
+.sec.band .small,.sec.band .trust{color:#c9c9e0}
+.sec.band a:not(.btn){color:var(--green)}
 .crumbs{font-size:.88rem;color:var(--muted);padding:14px 0 0}
 .crumbs a{color:var(--muted)}
 
