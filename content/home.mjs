@@ -44,7 +44,7 @@ export const home = () => `
 <p class="ctas">${btn("Get Started at $1,990/month", "/get-started", "", "hero")}${btn("Why This Works", "/why-social-media-fulfillment", "ghost", "hero")}</p>
 <p class="tags"><span>Built for busy operators.</span><span>Remote service · United States.</span><span>Local relevance: Georgetown MA.</span></p>
 </div>
-<div class="hero-art"><img src="/img/logo-512.png" width="512" height="512" alt="FBK Marketing brand mark" fetchpriority="high"></div>
+<div class="hero-art"><img src="/img/logo-512.webp" width="512" height="512" alt="FBK Marketing brand mark" fetchpriority="high" decoding="async"></div>
 </div></section>
 
 <section class="sec"><div class="wrap narrow">
