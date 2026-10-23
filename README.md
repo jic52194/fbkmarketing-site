@@ -52,13 +52,14 @@ These redirects use a meta refresh plus a canonical tag and are noindex:
 
 **Not carried over:** the Meta Pixel `341558345430601`. To keep it, add it behind the cookie consent.
 
+## Pricing (owner decision, 2026-10)
+- One price everywhere: $1,990/month (copy, CTAs, FAQ, meta descriptions, Service/Offer schema on the home page, llms.txt).
+  The old free-month home offer and its lower "normal" price are removed; CTAs read "Get Started at $1,990/month" and go to
+  the unchanged `/get-started` order form ($1990 Per Month Social Media). Legal pages keep the program name
+  "$1990 Per Month Effortless Social Media Automation" as written.
+
 ## Open questions for the owner
-- **Price conflict:**
-  - The home page offer says "30 days free (normally $497/month)".
-  - These pages say $1990/month: `/1990-service-details`, `/1990-pricing-explanation`, `/faq`, `/terms-and-conditions`, `/join`, `/affiliate-terms-and-conditions` and the `/get-started` order form.
-  - Each price stays where it appears today. Pick one.
 - `/join` says "How to Make Money Selling Social Media in 2024".
-- The order form charges $1990 with no free month, while the home page CTA "Claim 30 Days Free" links to it.
 
 ## DNS (GitHub Pages)
 - Apex `fbkmarketing.com`: A records 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153

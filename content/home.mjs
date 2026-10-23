@@ -1,5 +1,5 @@
 // Home page: the live landing page that GoHighLevel served at /social-media-fulfillment-faq (wording kept as published).
-// Price note: this page states the offer as "30 days free (normally $497/month)". Other pages state $1990/month; see README › Open questions.
+// Price (owner decision, 2026-10): $1,990/month everywhere; the old free-month offer is retired.
 import { esc, btn, img, figure, list, faqSchema } from "../scripts/lib.mjs";
 
 export const OBJECTIONS = [
@@ -20,7 +20,7 @@ const COMPARE = [
   ["Freelancer", "Talent, when available. Often inconsistent output.", "Ghosting, style drift, missed weeks."],
   ["Agency", "Meetings + decks. “Strategy” without shipping.", "High cost, slow cycles, unclear deliverables."],
   ["In-house", "Full control if you can hire & manage.", "Hiring + salary + turnover + management load."],
-  ["FBK Fulfillment", "Content ships on schedule. Approval loop or autopost.", "Low. Clear deliverables. First month free."],
+  ["FBK Fulfillment", "Content ships on schedule. Approval loop or autopost.", "Low. Clear deliverables. $1,990/month, month-to-month."],
 ];
 
 const SHOWCASE = [
@@ -30,7 +30,10 @@ const SHOWCASE = [
   ["chat-lead-capture", "AI chatbot for your business to capture and qualify leads for Georgetown Massachusetts companies", "Chat + Lead Capture", "Turn website traffic into conversations. Capture intent in real time."],
 ];
 
-export const homeSchema = [faqSchema(OBJECTIONS.map(([q, a]) => [q.replace(/[“”]/g, ""), a]))];
+const OFFER_SCHEMA = { "@context": "https://schema.org", "@type": "Service", name: "Done-for-you social media fulfillment", serviceType: "Social media content creation and publishing", provider: { "@id": "https://fbkmarketing.com/#org" }, areaServed: "US",
+  offers: { "@type": "Offer", url: "https://fbkmarketing.com/get-started", price: "1990.00", priceCurrency: "USD", priceSpecification: { "@type": "UnitPriceSpecification", price: "1990.00", priceCurrency: "USD", unitCode: "MON", referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MON" } } } };
+
+export const homeSchema = [OFFER_SCHEMA, faqSchema(OBJECTIONS.map(([q, a]) => [q.replace(/[“”]/g, ""), a]))];
 
 export const home = () => `
 <section class="hero" id="top"><div class="wrap split">
@@ -38,7 +41,7 @@ export const home = () => `
 <p class="eyebrow">Social Media Fulfillment</p>
 <h1>FBK Marketing <span class="h1sub">Done-for-you social media fulfillment</span></h1>
 <p class="lede">A fulfillment-first social media system for operators who cannot afford inconsistency. Owned and operated by RAIBRO LLC. Built on CasperPortal infrastructure so your marketing doesn’t just look active — it creates conversations, captures leads, and pushes prospects toward action.</p>
-<p class="ctas">${btn("Claim 30 Days Free", "/get-started")}${btn("Why This Works", "/why-social-media-fulfillment", "ghost")}</p>
+<p class="ctas">${btn("Get Started at $1,990/month", "/get-started")}${btn("Why This Works", "/why-social-media-fulfillment", "ghost")}</p>
 <p class="tags"><span>Built for busy operators.</span><span>Remote service · United States.</span><span>Local relevance: Georgetown MA.</span></p>
 </div>
 <div class="hero-art"><img src="/img/logo-512.png" width="512" height="512" alt="FBK Marketing brand mark" fetchpriority="high"></div>
@@ -51,11 +54,11 @@ export const home = () => `
 
 <section class="sec soft" id="offer"><div class="wrap split">
 <div>
-<p class="eyebrow">Limited-Risk Offer</p>
-<h2>30 Days Free Content Creation</h2>
-<p>Get 30 days of done-for-you social media content at no charge (normally $497/month). You get a consistent posting cadence, clean brand voice alignment, and a system you can keep running without becoming a content factory.</p>
-<div class="offer"><p class="eyebrow">Offer</p><p><b>30 days of done-for-you social media content at no charge (normally $497/month).</b></p><p class="small">First Month Free · Then standard plan</p>
-<p class="ctas">${btn("Claim Free Month", "/get-started")}${btn("See Why", "/why-social-media-fulfillment", "ghost")}</p></div>
+<p class="eyebrow">The Offer</p>
+<h2>Done-For-You Social Media Content for $1,990/month</h2>
+<p>Get done-for-you social media content for $1,990/month. You get a consistent posting cadence, clean brand voice alignment, and a system you can keep running without becoming a content factory.</p>
+<div class="offer"><p class="eyebrow">Offer</p><p><b>Done-for-you social media content: $1,990/month.</b></p><p class="small">Month-to-month · No long-term contract · <a href="/1990-pricing-explanation">What the price covers</a></p>
+<p class="ctas">${btn("Order Now: $1,990/month", "/get-started")}${btn("See Why", "/why-social-media-fulfillment", "ghost")}</p></div>
 </div>
 <div class="figs">${figure("strategy-session", "Business team marketing strategy session for Georgetown Massachusetts companies by FBK Marketing", "Strategy without overhead")}${figure("partnership-handshake", "Trusted marketing partnership handshake for Georgetown MA businesses with FBK Marketing", "Trust-first partnership")}</div>
 </div></section>
@@ -95,7 +98,7 @@ ${COMPARE.map(([o, g, r], i) => `<tr${i === 3 ? ' class="hl"' : ""}><th scope="r
 <h2>FAQ</h2>
 <p class="eyebrow">Fast Links</p>
 <p>If you want the long-form answers, use the <a href="/faq">FAQ page</a>. If you’re ready, go to <a href="/get-started">Get Started</a>.</p>
-<p class="ctas">${btn("Open FAQ", "/faq", "ghost")}${btn("Get Started", "/get-started")}</p>
+<p class="ctas">${btn("Open FAQ", "/faq", "ghost")}${btn("Get Started at $1,990/month", "/get-started")}</p>
 <h3>Best Fit</h3>
 ${list(["Busy operators who need consistency.", "Service businesses that sell trust.", "Local businesses (including Georgetown MA)."])}
 <h3>Competitive Threats</h3>
