@@ -54,8 +54,11 @@ export function write(path, html) {
   if (path !== "/" && !path.endsWith("/") && !path.includes(".")) writeFileSync(join(OUT, path + ".html"), html);
 }
 
-/** Page shell. crumbs = [[name, path], ...] adds a visible breadcrumb + BreadcrumbList. */
-export function page({ path, title, desc, body, schema = [], crumbs, noindex = false, chat = true, ogImage = LOGO }) {
+/** Page shell. crumbs = [[name, path], ...] adds a visible breadcrumb + BreadcrumbList.
+ *  mcta = [label, href] for the sticky call-to-action bar on phones (null = none). Default: the primary CTA,
+ *  the affiliate sign-up on affiliate pages, and none on the order form and funnel steps (chat: false). */
+export function page({ path, title, desc, body, schema = [], crumbs, noindex = false, chat = true, ogImage = LOGO, mcta }) {
+  if (mcta === undefined) mcta = !chat || path === "/get-started" ? null : path === "/join" ? ["Join the Affiliate Program", "#join-form"] : path === "/affiliate-terms-and-conditions" ? ["Join the Affiliate Program", "/join"] : PRIMARY;
   if (title.length > 60) throw new Error(`title > 60 chars on ${path}: ${title}`);
   if (desc.length > 155) throw new Error(`description > 155 chars on ${path}: ${desc}`);
   const url = SITE + path;
@@ -85,6 +88,7 @@ ${schemas.map(ld).join("")}
 <details class="menu"><summary aria-label="Open menu">Menu</summary><nav aria-label="Mobile">${NAV.map(navLink).join("")}<a href="/get-started" data-track="Get Started [menu]">Get Started</a></nav></details>
 </div></header>
 <main id="main">${crumbs && crumbs.length > 1 ? `<div class="wrap"><nav class="crumbs" aria-label="Breadcrumb">${crumbs.map(([n, p], i) => (i < crumbs.length - 1 ? `<a href="${p}">${esc(n)}</a>` : `<span aria-current="page">${esc(n)}</span>`)).join(" › ")}</nav></div>` : ""}${body}</main>
+${mcta ? `<div class="mcta">${btn(mcta[0], mcta[1], "", "sticky")}</div>` : ""}
 <footer class="foot"><div class="wrap">
 <div class="cols">
 <div><p class="fbrand">FBK Marketing</p><p>United States · Remote Service<br>Owned by RAIBRO LLC</p><p>Done-for-you social content to stay consistent.</p>
@@ -96,7 +100,7 @@ ${schemas.map(ld).join("")}
 </div>
 <p class="copy">© ${TODAY.slice(0, 4)} FBK Marketing. All rights reserved. · <a href="#" onclick="window.dispatchEvent(new Event('cso:consent-open'));return false">Cookie settings</a> · <a href="https://casperb2b.com/portfolio" rel="noopener">Built by CasperB2B</a></p>
 </div></footer>
-<script src="/assets/t.js" data-site="fbkmarketing" data-privacy="/privacy-policy" data-banner="1" defer></script>
+<script src="/assets/t.js" data-site="fbkmarketing" data-privacy="/privacy-policy" data-banner="1" defer></script><script src="/assets/fbk.js?v=${TODAY}" defer></script>
 ${chat ? CHAT : ""}
 </body></html>`;
 }
