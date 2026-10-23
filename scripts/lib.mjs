@@ -41,7 +41,7 @@ export const ORG = { "@context": "https://schema.org", "@type": "Organization", 
   contactPoint: { "@type": "ContactPoint", telephone: "+1-573-432-5325", contactType: "Customer Service", email: EMAIL, areaServed: "US", availableLanguage: "English" },
   parentOrganization: { "@type": "Organization", name: "RAIBRO LLC" },
   sameAs: ["https://www.youtube.com/@FBKMarketing", "https://www.facebook.com/fbkmarketing"],
-  creator: CASPERB2B, brand: CASPERB2B };
+  creator: CASPERB2B };
 
 export const NAV = [["Offer", "/#offer"], ["System", "/#system"], ["Why fulfillment", "/why-social-media-fulfillment"], ["FAQ", "/faq"], ["Contact", "/contact"]];
 
