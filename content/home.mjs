@@ -68,6 +68,7 @@ export const home = () => `
 <h2>What Ships Every Month</h2>
 <p class="lead-in">We treat content like fulfillment: deliverables, cadence, and quality control. You don’t pay for “ideas.” You pay for output that keeps your brand in motion.</p>
 <ol class="steps">${SYSTEM.map(([n, t, d]) => `<li><span class="num">${n}</span><h3>${esc(t)}</h3><p>${esc(d)}</p></li>`).join("")}</ol>
+<p class="more">The details: <a href="/1990-service-details">what the $1,990/month service includes</a> · <a href="/platforms-managed">social media platforms managed</a> · <a href="/content-control">how post approvals work</a> · <a href="/posting-frequency">posting frequency</a> · <a href="/measuring-success">how success is measured</a></p>
 <div class="figs two">${figure("local-market-framework", "Local market domination framework infographic for Georgetown MA businesses using FBK Marketing", "Local market framework")}${figure("seo-process", "SEO process infographic explaining how search works for Georgetown Massachusetts businesses", "How visibility compounds")}</div>
 </div></section>
 
@@ -86,6 +87,7 @@ ${COMPARE.map(([o, g, r], i) => `<tr${i === 3 ? ' class="hl"' : ""}><th scope="r
 <h2>Objections, Answered</h2>
 <p class="lead-in">These are the common concerns — handled upfront so you can decide fast.</p>
 <div class="faq">${OBJECTIONS.map(([q, a]) => `<details open><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>
+<p class="more">More answers: <a href="/content-tailoring">how content is tailored to your brand</a> · <a href="/cancellation-policy">the cancellation policy</a> · <a href="/why-choose-fbkmarketing">what sets FBK Marketing apart</a> · <a href="/faq">the full FAQ</a></p>
 </div></section>
 
 <section class="sec soft" id="showcase"><div class="wrap">

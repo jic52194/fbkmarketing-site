@@ -117,7 +117,7 @@ export function img(name, alt, { sizes = "(min-width: 900px) 420px, 100vw", eage
 }
 export const figure = (name, alt, caption) => `<figure class="fig">${img(name, alt)}<figcaption>${esc(caption)}</figcaption></figure>`;
 export const embed = (src, title, h = 760, id = "") => `<div class="embed"${id ? ` id="${id}"` : ""}><iframe src="${src}" title="${esc(title)}" style="min-height:${h}px" loading="lazy"></iframe></div><script src="https://link.casperportal.net/js/form_embed.js" defer></script>`;
-export const related = (h2, items) => `<section class="sec soft"><div class="wrap"><h2>${esc(h2)}</h2><div class="cards c3">${items.map(([t, d, href]) => `<div class="card"><h3><a href="${href}">${esc(t)}</a></h3><p>${esc(d)}</p></div>`).join("")}</div></div></section>`;
+export const related = (h2, items, footHtml = "") => `<section class="sec soft"><div class="wrap"><h2>${esc(h2)}</h2><div class="cards c3">${items.map(([t, d, href]) => `<div class="card"><h3><a href="${href}">${esc(t)}</a></h3><p>${esc(d)}</p></div>`).join("")}</div>${footHtml ? `<p class="more">${footHtml}</p>` : ""}</div></section>`;
 export const faqSchema = (items) => ({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: items.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) });
 
 /** Redirect page for a legacy URL (GitHub Pages can't 301): canonical + meta refresh + noindex. */

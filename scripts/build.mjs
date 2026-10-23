@@ -65,6 +65,33 @@ const CONCERN = {
   "integration-with-marketing": ["Social Media + Your Other Marketing | FBK Marketing", "How FBK Marketing aligns social media with your SEO, email and content marketing.",
     "This page is for business owners running other marketing channels: it explains how FBK Marketing aligns social media with your SEO, email and content marketing."],
 };
+// Related pages, chosen by topic across both groups (service FAQ pages + concern pages), so pages that answer
+// neighbouring questions (e.g. measuring success ↔ ROI, follower engagement ↔ customer interaction) link to each other.
+const RELATED = {
+  "1990-service-details": ["1990-pricing-explanation", "platforms-managed", "posting-frequency"],
+  "1990-pricing-explanation": ["1990-service-details", "cancellation-policy", "addressing-roi-concerns"],
+  "why-choose-fbkmarketing": ["1990-service-details", "content-tailoring", "overcoming-the-lack-of-expertise"],
+  "platforms-managed": ["platform-selection", "maintaining-consistent-branding", "posting-frequency"],
+  "content-tailoring": ["maintaining-consistent-branding", "content-control", "idea-sharing"],
+  "content-control": ["content-tailoring", "idea-sharing", "fear-of-negative-feedback"],
+  "posting-frequency": ["staying-ahead-of-algorithm-changes", "streamlining-content-creation", "platforms-managed"],
+  "cancellation-policy": ["1990-pricing-explanation", "1990-service-details", "content-control"],
+  "measuring-success": ["addressing-roi-concerns", "ad-budget-management", "posting-frequency"],
+  "follower-engagement": ["engagement-and-customer-interaction", "fear-of-negative-feedback", "measuring-success"],
+  "idea-sharing": ["content-control", "content-tailoring", "integration-with-marketing"],
+  "overcoming-time-constraints": ["streamlining-content-creation", "1990-service-details", "posting-frequency"],
+  "overcoming-the-lack-of-expertise": ["why-choose-fbkmarketing", "staying-ahead-of-algorithm-changes", "platform-selection"],
+  "streamlining-content-creation": ["overcoming-time-constraints", "content-tailoring", "posting-frequency"],
+  "maintaining-consistent-branding": ["content-tailoring", "content-control", "platforms-managed"],
+  "addressing-roi-concerns": ["measuring-success", "1990-pricing-explanation", "ad-budget-management"],
+  "staying-ahead-of-algorithm-changes": ["posting-frequency", "keeping-up-with-competitors", "overcoming-the-lack-of-expertise"],
+  "ad-budget-management": ["addressing-roi-concerns", "measuring-success", "integration-with-marketing"],
+  "engagement-and-customer-interaction": ["follower-engagement", "fear-of-negative-feedback", "maintaining-consistent-branding"],
+  "keeping-up-with-competitors": ["staying-ahead-of-algorithm-changes", "platform-selection", "why-choose-fbkmarketing"],
+  "platform-selection": ["platforms-managed", "keeping-up-with-competitors", "integration-with-marketing"],
+  "fear-of-negative-feedback": ["engagement-and-customer-interaction", "follower-engagement", "content-control"],
+  "integration-with-marketing": ["ad-budget-management", "idea-sharing", "measuring-success"],
+};
 const blurb = (slug) => { const p = C[slug]; return (p.intro[0] || p.sections[0].p[0]).replace(/^(.{0,140}\S)\s.*$/s, "$1…"); };
 const ring = (keys, k, n = 3) => { const i = keys.indexOf(k); return Array.from({ length: n }, (_, j) => keys[(i + j + 1) % keys.length]); };
 const ctaHref = (href) => (href === "/request-quote" ? "/get-started" : href); // live: /request-quote 301s to the order form
@@ -74,11 +101,13 @@ function templatePage(slug, [title, desc, answer], parent, siblings) {
   const body = `<section class="hero light"><div class="wrap narrow"><h1>${esc(p.h1)}</h1><p class="lede">${esc(answer)}</p>${p.intro.map((x) => `<p class="lede">${esc(x)}</p>`).join("")}</div></section>
 <section class="sec"><div class="wrap"><div class="features">${p.sections.map((s) => `<article class="feature"><h2>${esc(s.h2)}</h2>${s.p.map((x) => `<p>${esc(x)}</p>`).join("")}${list(s.li)}${s.cta ? `<p>${btn(s.cta[0], ctaHref(s.cta[1]))}</p>` : ""}</article>`).join("")}</div></div></section>
 ${p.closing ? `<section class="sec band"><div class="wrap narrow"><h2>${esc(p.closing.h2)}</h2>${p.closing.p.map((x) => `<p>${esc(x)}</p>`).join("")}<p>${btn(p.closing.cta[0], ctaHref(p.closing.cta[1]))} ${btn("Contact Us", "/contact", "ghost light")}</p></div></section>` : ""}
-${related(parent[0] === "FAQ" ? "More about how the service works" : "More reasons businesses choose fulfillment", siblings.map((k) => [C[k].h1, blurb(k), "/" + k]))}`;
+${related("Related questions", siblings.map((k) => [C[k].h1, blurb(k), "/" + k]), parent[0] === "FAQ"
+    ? `See every answer on the <a href="/faq">social media fulfillment FAQ</a> or the twelve <a href="/why-social-media-fulfillment">reasons businesses hand off social media</a>.`
+    : `See all twelve <a href="/why-social-media-fulfillment">reasons businesses hand off social media</a> or the <a href="/faq">social media fulfillment FAQ</a>.`)}`;
   write("/" + slug, page({ path: "/" + slug, title, desc, body, crumbs: [["Home", "/"], parent, [p.h1, "/" + slug]] }));
 }
-for (const k of Object.keys(SERVICE)) templatePage(k, SERVICE[k], ["FAQ", "/faq"], ring(Object.keys(SERVICE), k));
-for (const k of Object.keys(CONCERN)) templatePage(k, CONCERN[k], ["Why Fulfillment", "/why-social-media-fulfillment"], ring(Object.keys(CONCERN), k));
+for (const k of Object.keys(SERVICE)) templatePage(k, SERVICE[k], ["FAQ", "/faq"], RELATED[k] ?? ring(Object.keys(SERVICE), k));
+for (const k of Object.keys(CONCERN)) templatePage(k, CONCERN[k], ["Why Fulfillment", "/why-social-media-fulfillment"], RELATED[k] ?? ring(Object.keys(CONCERN), k));
 
 // ── Why social media fulfillment (index of the 12 concern pages) ──
 {
