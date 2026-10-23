@@ -15,6 +15,7 @@ python3 -m http.server 8765 --directory dist   # preview
 - `scripts/lib.mjs` holds the layout, the Organization facts and the embed IDs. `scripts/build.mjs` defines every page plus its title and description.
 - `scripts/images.mjs <dir>` is a one-time optimizer. It turned the originals from the live site into `static/img/*.webp`.
 - `static/assets/t.js` is the first-party analytics and cookie notice, set with `data-site="fbkmarketing"`.
+- `static/assets/fbk.js` (site-only, loaded after t.js): hides the sticky phone CTA while the page's own buttons are on screen, and sends conversion events to t.js: `checkout_view` on /get-started, `conversion` on the post-order thank-you page, and `embed_msg` (the name only of each message the GHL form iframes post, to find their submit message). CTA clicks are labelled `<label> [hero|closing|sticky|header|menu|footer|offer|faq]` via `data-track`.
 
 ## Pages (31 indexable)
 - `/`: home (landing page: offer, system, infographics, objections, FAQ links)
