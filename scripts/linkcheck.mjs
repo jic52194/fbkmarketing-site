@@ -5,10 +5,11 @@
 //   • flags #fragment links whose target page has no element with that id.
 // No network calls: links to other hosts are not fetched.
 // Exit code 1 when a page links to a missing page or is a dead end, so it can gate a deploy.
+import { fileURLToPath } from "node:url";
 import { readFileSync, existsSync, statSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
-const OUT = new URL("../dist/", import.meta.url).pathname;
+const OUT = fileURLToPath(new URL("../dist/", import.meta.url));
 const MIN = Number(process.env.MIN_LINKS || 3);
 const HOST = /^https?:\/\/(www\.)?fbkmarketing\.com(?=\/|$)/i;
 

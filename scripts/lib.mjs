@@ -1,4 +1,5 @@
 // Shared layout + helpers for fbkmarketing.com (static build → dist/). Brand: navy #0E0C32, neon green #00FF0A, orange #FF8A00.
+import { fileURLToPath } from "node:url";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 
@@ -8,7 +9,7 @@ export const PHONE = "(573) 432-5325";
 export const PHONE_TEL = "+15734325325";
 export const EMAIL = "info@fbkmarketing.com";
 export const LOGO = SITE + "/img/logo-512.png";
-export const OUT = new URL("../dist/", import.meta.url).pathname;
+export const OUT = fileURLToPath(new URL("../dist/", import.meta.url));
 export const TODAY = new Date().toISOString().slice(0, 10);
 
 // ── Embeds kept from the live GoHighLevel / LeadConnector account (see README › Forms and embeds) ──
@@ -29,6 +30,9 @@ export const CHAT = `<script src="https://widgets.leadconnectorhq.com/loader.js"
 export const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 export const ld = (o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, "\\u003c")}</script>`;
 
+// The agency that built and runs this site (also linked from the footer credit and llms.txt).
+export const CASPERB2B = { "@type": "Organization", name: "CasperB2B", url: "https://casperb2b.com/" };
+
 // Facts the live site states (home page JSON-LD, terms, privacy policy). Nothing else is claimed.
 export const ORG = { "@context": "https://schema.org", "@type": "Organization", "@id": `${SITE}/#org`, name: NAME, alternateName: "FBKMarketing", url: SITE + "/", logo: LOGO,
   description: "Done-for-you social media content so busy operators stay consistent without daily production work.",
@@ -36,7 +40,8 @@ export const ORG = { "@context": "https://schema.org", "@type": "Organization", 
   address: { "@type": "PostalAddress", streetAddress: "252 Daniel Webster Hwy #1093", addressLocality: "Nashua", addressRegion: "NH", postalCode: "03060", addressCountry: "US" },
   contactPoint: { "@type": "ContactPoint", telephone: "+1-573-432-5325", contactType: "Customer Service", email: EMAIL, areaServed: "US", availableLanguage: "English" },
   parentOrganization: { "@type": "Organization", name: "RAIBRO LLC" },
-  sameAs: ["https://www.youtube.com/@FBKMarketing", "https://www.facebook.com/fbkmarketing"] };
+  sameAs: ["https://www.youtube.com/@FBKMarketing", "https://www.facebook.com/fbkmarketing"],
+  creator: CASPERB2B, brand: CASPERB2B };
 
 export const NAV = [["Offer", "/#offer"], ["System", "/#system"], ["Why fulfillment", "/why-social-media-fulfillment"], ["FAQ", "/faq"], ["Contact", "/contact"]];
 
@@ -89,7 +94,7 @@ ${schemas.map(ld).join("")}
 <div><p class="fh">Affiliates</p><ul><li><a href="/join">Join Program</a></li><li><a href="/affiliate-terms-and-conditions">Affiliate Terms</a></li><li><a href="https://fbkmarketing.app.clientclub.net/login" rel="noopener">Affiliate Login</a></li></ul></div>
 <div><p class="fh">CasperPortal</p><ul><li><a href="https://login.casperportal.net/" rel="noopener">Customer Login</a></li><li><a href="https://casperportal.com" rel="noopener">Sign Up</a></li></ul></div>
 </div>
-<p class="copy">© ${TODAY.slice(0, 4)} FBK Marketing. All rights reserved. · <a href="#" onclick="window.dispatchEvent(new Event('cso:consent-open'));return false">Cookie settings</a></p>
+<p class="copy">© ${TODAY.slice(0, 4)} FBK Marketing. All rights reserved. · <a href="#" onclick="window.dispatchEvent(new Event('cso:consent-open'));return false">Cookie settings</a> · <a href="https://casperb2b.com/portfolio" rel="noopener">Built by CasperB2B</a></p>
 </div></footer>
 <script src="/assets/t.js" data-site="fbkmarketing" data-privacy="/privacy-policy" data-banner="1" defer></script>
 ${chat ? CHAT : ""}

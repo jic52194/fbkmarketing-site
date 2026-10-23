@@ -1,4 +1,5 @@
 // Builds fbkmarketing.com into dist/ (static, GitHub Pages). node scripts/build.mjs
+import { fileURLToPath } from "node:url";
 import { rmSync, mkdirSync, cpSync, writeFileSync, readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { SITE, OUT, TODAY, EMAIL, PHONE, PHONE_TEL, ORDER_URL, FORM, SURVEY, FORMS, AFFILIATE_SURVEY, urls, write, page, esc, btn, list, embed, related, faqSchema, redirect } from "./lib.mjs";
@@ -6,7 +7,7 @@ import { home, homeSchema } from "../content/home.mjs";
 
 const C = JSON.parse(readFileSync(new URL("../content/pages.json", import.meta.url), "utf8"));
 rmSync(OUT, { recursive: true, force: true }); mkdirSync(OUT, { recursive: true });
-const STATIC = new URL("../static/", import.meta.url).pathname;
+const STATIC = fileURLToPath(new URL("../static/", import.meta.url));
 if (existsSync(STATIC)) cpSync(STATIC, OUT, { recursive: true });
 
 // ── Home ──
@@ -15,39 +16,62 @@ write("/", page({ path: "/", title: "FBK Marketing | Done-For-You Social Media F
 
 // ── Template pages (2024 site): h1, intro, three or four feature sections, closing call to action ──
 const SERVICE = {
-  "1990-service-details": ["Social Media Management Service Details | FBK Marketing", "Everything included in FBK Marketing's done-for-you social media management service."],
-  "1990-pricing-explanation": ["Social Media Management Pricing Explained | FBK Marketing", "How FBK Marketing prices done-for-you social media management and what the monthly fee covers."],
-  "why-choose-fbkmarketing": ["Why Choose FBK Marketing | Done-For-You Social Media", "What sets FBK Marketing apart: personalized strategies, expert guidance and comprehensive support for your social media."],
-  "platforms-managed": ["Social Media Platforms Managed | FBK Marketing", "Facebook, Instagram, Twitter (X), LinkedIn and more, managed with content tailored to your brand."],
-  "content-tailoring": ["Content Tailored to Your Brand | FBK Marketing", "How FBK Marketing matches every post to your brand voice, services and audience."],
-  "content-control": ["Content Control and Approvals | FBK Marketing", "Approve every post, suggest changes and keep control of your brand while FBK Marketing handles the work."],
-  "posting-frequency": ["Social Media Posting Frequency | FBK Marketing", "How FBK Marketing sets a posting cadence that keeps your brand visible and engaged."],
-  "cancellation-policy": ["Cancellation Policy | FBK Marketing", "Month-to-month billing, cancel with 30 days' notice. Payments are non-refundable."],
-  "measuring-success": ["Measuring Social Media Success | FBK Marketing", "The metrics and reports FBK Marketing uses to show the impact of your social media."],
-  "follower-engagement": ["Follower Engagement | FBK Marketing", "How FBK Marketing engages with your followers to build relationships around your brand."],
-  "idea-sharing": ["Share Your Content Ideas | FBK Marketing", "How you can share ideas and campaigns with the FBK Marketing team."],
+  "1990-service-details": ["Social Media Management Service Details | FBK Marketing", "Everything included in FBK Marketing's done-for-you social media management service.",
+    "This page lists what business owners get with FBK Marketing’s done-for-you social media management service at $1,990 per month: content creation, strategic posting and hands-off management."],
+  "1990-pricing-explanation": ["Social Media Management Pricing Explained | FBK Marketing", "How FBK Marketing prices done-for-you social media management and what the monthly fee covers.",
+    "This page explains, for business owners comparing options, what FBK Marketing’s $1,990/month social media management fee covers and why it is priced that way."],
+  "why-choose-fbkmarketing": ["Why Choose FBK Marketing | Done-For-You Social Media", "What sets FBK Marketing apart: personalized strategies, expert guidance and comprehensive support for your social media.",
+    "This page explains, for business owners choosing a social media provider, what sets FBK Marketing’s done-for-you service apart: personalized strategies, expert guidance and comprehensive support."],
+  "platforms-managed": ["Social Media Platforms Managed | FBK Marketing", "Facebook, Instagram, Twitter (X), LinkedIn and more, managed with content tailored to your brand.",
+    "This page lists the social media platforms FBK Marketing manages for business owners, including Facebook, Instagram, Twitter (X) and LinkedIn, with content tailored to each brand."],
+  "content-tailoring": ["Content Tailored to Your Brand | FBK Marketing", "How FBK Marketing matches every post to your brand voice, services and audience.",
+    "This page explains, for business owners using FBK Marketing, how every post is matched to your brand voice, services and audience."],
+  "content-control": ["Content Control and Approvals | FBK Marketing", "Approve every post, suggest changes and keep control of your brand while FBK Marketing handles the work.",
+    "This page explains, for business owners who want to keep control of their brand, how you can approve every post and suggest changes while FBK Marketing handles the work."],
+  "posting-frequency": ["Social Media Posting Frequency | FBK Marketing", "How FBK Marketing sets a posting cadence that keeps your brand visible and engaged.",
+    "This page explains, for business owners using FBK Marketing, how a posting cadence is set to keep your brand visible and engaged."],
+  "cancellation-policy": ["Cancellation Policy | FBK Marketing", "Month-to-month billing, cancel with 30 days' notice. Payments are non-refundable.",
+    "This is FBK Marketing’s cancellation policy for customers of its social media management service: billing is month-to-month, you can cancel with 30 days’ notice, and payments are non-refundable."],
+  "measuring-success": ["Measuring Social Media Success | FBK Marketing", "The metrics and reports FBK Marketing uses to show the impact of your social media.",
+    "This page explains, for business owners using FBK Marketing, which metrics and reports are used to show the impact of your social media."],
+  "follower-engagement": ["Follower Engagement | FBK Marketing", "How FBK Marketing engages with your followers to build relationships around your brand.",
+    "This page explains, for business owners using FBK Marketing, how the team engages with your followers to build relationships around your brand."],
+  "idea-sharing": ["Share Your Content Ideas | FBK Marketing", "How you can share ideas and campaigns with the FBK Marketing team.",
+    "This page explains, for FBK Marketing customers, how you can share your own content ideas and campaigns with the team."],
 };
 const CONCERN = {
-  "overcoming-time-constraints": ["No Time for Social Media? | FBK Marketing", "How done-for-you social media fulfillment frees business owners from daily content work."],
-  "overcoming-the-lack-of-expertise": ["No Social Media Expertise? | FBK Marketing", "Professional social media management for businesses without in-house expertise."],
-  "streamlining-content-creation": ["Streamlining Content Creation | FBK Marketing", "Consistent, high-quality social content without building a content team."],
-  "maintaining-consistent-branding": ["Consistent Branding Across Platforms | FBK Marketing", "Keep one voice, tone and look across every social platform."],
-  "addressing-roi-concerns": ["Social Media ROI | FBK Marketing", "How FBK Marketing ties social media activity to measurable results."],
-  "staying-ahead-of-algorithm-changes": ["Social Media Algorithm Changes | FBK Marketing", "How FBK Marketing adapts content as platform algorithms change."],
-  "ad-budget-management": ["Social Ad Budget Management | FBK Marketing", "Strategic management of your social media ad spend."],
-  "engagement-and-customer-interaction": ["Engagement and Customer Interaction | FBK Marketing", "Timely, consistent responses to comments, messages and reviews so your brand stays responsive and trusted."],
-  "keeping-up-with-competitors": ["Keeping Up with Competitors | FBK Marketing", "How FBK Marketing helps your brand stay competitive on social media."],
-  "platform-selection": ["Choosing the Right Social Platforms | FBK Marketing", "How FBK Marketing helps you choose the social media platforms that fit your business."],
-  "fear-of-negative-feedback": ["Handling Negative Feedback | FBK Marketing", "A professional strategy for responding to negative feedback on social media."],
-  "integration-with-marketing": ["Social Media + Your Other Marketing | FBK Marketing", "How FBK Marketing aligns social media with your SEO, email and content marketing."],
+  "overcoming-time-constraints": ["No Time for Social Media? | FBK Marketing", "How done-for-you social media fulfillment frees business owners from daily content work.",
+    "This page is for business owners with no time for social media: it explains how FBK Marketing’s done-for-you fulfillment takes daily content work off your plate."],
+  "overcoming-the-lack-of-expertise": ["No Social Media Expertise? | FBK Marketing", "Professional social media management for businesses without in-house expertise.",
+    "This page is for businesses without in-house social media expertise: it explains how FBK Marketing provides professional social media management instead."],
+  "streamlining-content-creation": ["Streamlining Content Creation | FBK Marketing", "Consistent, high-quality social content without building a content team.",
+    "This page is for business owners who struggle to produce content regularly: it explains how FBK Marketing delivers consistent, high-quality social content without you building a content team."],
+  "maintaining-consistent-branding": ["Consistent Branding Across Platforms | FBK Marketing", "Keep one voice, tone and look across every social platform.",
+    "This page is for business owners active on several social platforms: it explains how FBK Marketing keeps one voice, tone and look across all of them."],
+  "addressing-roi-concerns": ["Social Media ROI | FBK Marketing", "How FBK Marketing ties social media activity to measurable results.",
+    "This page is for business owners who want social media to pay off: it explains how FBK Marketing ties social media activity to measurable results."],
+  "staying-ahead-of-algorithm-changes": ["Social Media Algorithm Changes | FBK Marketing", "How FBK Marketing adapts content as platform algorithms change.",
+    "This page is for business owners worried about platform algorithm updates: it explains how FBK Marketing adapts your content as algorithms change."],
+  "ad-budget-management": ["Social Ad Budget Management | FBK Marketing", "Strategic management of your social media ad spend.",
+    "This page is for business owners running social media ads: it explains how FBK Marketing helps manage your ad spend strategically."],
+  "engagement-and-customer-interaction": ["Engagement and Customer Interaction | FBK Marketing", "Timely, consistent responses to comments, messages and reviews so your brand stays responsive and trusted.",
+    "This page is for business owners who need to stay responsive online: it explains how FBK Marketing handles comments, messages and reviews in a timely, consistent way."],
+  "keeping-up-with-competitors": ["Keeping Up with Competitors | FBK Marketing", "How FBK Marketing helps your brand stay competitive on social media.",
+    "This page is for business owners facing competitors on social media: it explains how FBK Marketing helps your brand stay competitive."],
+  "platform-selection": ["Choosing the Right Social Platforms | FBK Marketing", "How FBK Marketing helps you choose the social media platforms that fit your business.",
+    "This page is for business owners unsure where to post: it explains how FBK Marketing helps you choose the social media platforms that fit your business."],
+  "fear-of-negative-feedback": ["Handling Negative Feedback | FBK Marketing", "A professional strategy for responding to negative feedback on social media.",
+    "This page is for business owners worried about criticism online: it explains FBK Marketing’s professional approach to responding to negative feedback on social media."],
+  "integration-with-marketing": ["Social Media + Your Other Marketing | FBK Marketing", "How FBK Marketing aligns social media with your SEO, email and content marketing.",
+    "This page is for business owners running other marketing channels: it explains how FBK Marketing aligns social media with your SEO, email and content marketing."],
 };
 const blurb = (slug) => { const p = C[slug]; return (p.intro[0] || p.sections[0].p[0]).replace(/^(.{0,140}\S)\s.*$/s, "$1…"); };
 const ring = (keys, k, n = 3) => { const i = keys.indexOf(k); return Array.from({ length: n }, (_, j) => keys[(i + j + 1) % keys.length]); };
 const ctaHref = (href) => (href === "/request-quote" ? "/get-started" : href); // live: /request-quote 301s to the order form
 
-function templatePage(slug, [title, desc], parent, siblings) {
+function templatePage(slug, [title, desc, answer], parent, siblings) {
   const p = C[slug];
-  const body = `<section class="hero light"><div class="wrap narrow"><h1>${esc(p.h1)}</h1>${p.intro.map((x) => `<p class="lede">${esc(x)}</p>`).join("")}</div></section>
+  const body = `<section class="hero light"><div class="wrap narrow"><h1>${esc(p.h1)}</h1><p class="lede">${esc(answer)}</p>${p.intro.map((x) => `<p class="lede">${esc(x)}</p>`).join("")}</div></section>
 <section class="sec"><div class="wrap"><div class="features">${p.sections.map((s) => `<article class="feature"><h2>${esc(s.h2)}</h2>${s.p.map((x) => `<p>${esc(x)}</p>`).join("")}${list(s.li)}${s.cta ? `<p>${btn(s.cta[0], ctaHref(s.cta[1]))}</p>` : ""}</article>`).join("")}</div></div></section>
 ${p.closing ? `<section class="sec band"><div class="wrap narrow"><h2>${esc(p.closing.h2)}</h2>${p.closing.p.map((x) => `<p>${esc(x)}</p>`).join("")}<p>${btn(p.closing.cta[0], ctaHref(p.closing.cta[1]))} ${btn("Contact Us", "/contact", "ghost light")}</p></div></section>` : ""}
 ${related(parent[0] === "FAQ" ? "More about how the service works" : "More reasons businesses choose fulfillment", siblings.map((k) => [C[k].h1, blurb(k), "/" + k]))}`;
@@ -59,7 +83,7 @@ for (const k of Object.keys(CONCERN)) templatePage(k, CONCERN[k], ["Why Fulfillm
 // ── Why social media fulfillment (index of the 12 concern pages) ──
 {
   const p = C["why-social-media-fulfillment"];
-  const body = `<section class="hero light"><div class="wrap narrow"><h1>${esc(p.h1)}</h1></div></section>
+  const body = `<section class="hero light"><div class="wrap narrow"><h1>${esc(p.h1)}</h1><p class="lede">This page is for business owners deciding whether to hand off social media: it covers the twelve most common concerns and how FBK Marketing’s done-for-you social media fulfillment addresses each one.</p></div></section>
 <section class="sec"><div class="wrap"><div class="cards c3">${p.cards.map((c) => `<div class="card"><h2 class="h3"><a href="${c.href}">${esc(c.h2)}</a></h2><p>${esc(c.p)}</p><p class="more"><a href="${c.href}" aria-label="Learn more: ${esc(c.h2)}">Learn More</a> · <a href="/get-started">Get Started</a></p></div>`).join("")}</div></div></section>
 <section class="sec band"><div class="wrap narrow"><h2>${esc(p.closing.h2)}</h2><p>${esc(p.closing.p)}</p><p>${btn("Get Started at $1,990/month", "/get-started")} ${btn("Read the FAQ", "/faq", "ghost light")}</p></div></section>`;
   write("/why-social-media-fulfillment", page({ path: "/why-social-media-fulfillment", title: "Why Businesses Need Social Media Fulfillment | FBK Marketing",
@@ -82,7 +106,7 @@ for (const k of Object.keys(CONCERN)) templatePage(k, CONCERN[k], ["Why Fulfillm
 write("/contact", page({ path: "/contact", title: "Contact FBK Marketing | Done-For-You Social Media",
   desc: "Contact FBK Marketing about done-for-you social media fulfillment. Email info@fbkmarketing.com or call (573) 432-5325.",
   crumbs: [["Home", "/"], ["Contact", "/contact"]],
-  body: `<section class="hero light"><div class="wrap narrow"><h1>Contact Us</h1><p class="lede">Contact us by filling out the form below.</p></div></section>
+  body: `<section class="hero light"><div class="wrap narrow"><h1>Contact Us</h1><p class="lede">This is the contact page for FBK Marketing, the done-for-you social media service for business owners. Contact us by filling out the form below.</p></div></section>
 <section class="sec"><div class="wrap split">
 <div>${embed(FORM(FORMS.contact), "Contact Us - FBK Marketing", 640)}</div>
 <div><h2>Other ways to reach us</h2><p>Email: <a href="mailto:${EMAIL}">${EMAIL}</a><br>Phone: <a href="tel:${PHONE_TEL}">${PHONE}</a><br>Nashua, New Hampshire</p>
@@ -94,6 +118,7 @@ write("/get-started", page({ path: "/get-started", noindex: true, chat: false, t
   desc: "Order FBK Marketing's done-for-you social media content at $1,990/month. Provide your business details for customized content creation.",
   body: `<section class="sec checkout"><div class="wrap narrow">
 <h1>Effortless Social Media Content for Business Owners</h1>
+<p class="center">This is the order page for FBK Marketing’s done-for-you social media content for business owners, at $1,990 per month.</p>
 <p class="center"><a class="btn" href="/why-social-media-fulfillment">Click to learn more...</a></p>
 <h2 class="h3 center">Who is Claiming This Offer?</h2><p class="center">Provide Your Business Details for Customized Content Creation</p>
 <p class="center small">Order: done-for-you social media, $1,990 per month. By ordering you agree to the <a href="/terms-and-conditions">terms and conditions</a>; see also the <a href="/cancellation-policy">cancellation policy</a>.</p>
@@ -172,6 +197,6 @@ writeFileSync(join(OUT, "robots.txt"), `User-agent: *\nAllow: /\n\n# AI answer e
 writeFileSync(join(OUT, "llms.txt"), readFileSync(new URL("../content/llms.txt", import.meta.url), "utf8"));
 writeFileSync(join(OUT, "CNAME"), "fbkmarketing.com\n");
 writeFileSync(join(OUT, ".nojekyll"), "");
-mkdirSync(new URL("../data/", import.meta.url).pathname, { recursive: true });
-writeFileSync(new URL("../data/urls.txt", import.meta.url).pathname, urls.map(([p]) => SITE + p).join("\n") + "\n");
+mkdirSync(fileURLToPath(new URL("../data/", import.meta.url)), { recursive: true });
+writeFileSync(fileURLToPath(new URL("../data/urls.txt", import.meta.url)), urls.map(([p]) => SITE + p).join("\n") + "\n");
 console.log(`built ${urls.length} indexable pages + ${Object.keys(LEGACY).length} redirects at ${TODAY}`);

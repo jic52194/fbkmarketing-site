@@ -1,11 +1,12 @@
 // One-time image optimizer: node scripts/images.mjs <dir with originals downloaded from the live site>
 // Writes responsive WebP files to static/img/ and prints their dimensions (copy them into scripts/site.mjs › IMG).
+import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { readdirSync, mkdirSync } from "node:fs";
 import { join, parse } from "node:path";
 const SRC = process.argv[2]; if (!SRC) { console.error("usage: node scripts/images.mjs <src-dir>"); process.exit(1); }
-const OUT = new URL("../static/img/", import.meta.url).pathname; mkdirSync(OUT, { recursive: true });
-const ROOT = new URL("../static/", import.meta.url).pathname;
+const OUT = fileURLToPath(new URL("../static/img/", import.meta.url)); mkdirSync(OUT, { recursive: true });
+const ROOT = fileURLToPath(new URL("../static/", import.meta.url));
 const out = {};
 for (const f of readdirSync(SRC)) {
   const { name, ext } = parse(f); if (![".png", ".jpeg", ".jpg", ".webp", ".svg"].includes(ext)) continue;

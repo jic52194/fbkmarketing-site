@@ -40,7 +40,7 @@ export const home = () => `
 <div>
 <p class="eyebrow">Social Media Fulfillment</p>
 <h1>FBK Marketing <span class="h1sub">Done-for-you social media fulfillment</span></h1>
-<p class="lede">A fulfillment-first social media system for operators who cannot afford inconsistency. Owned and operated by RAIBRO LLC. Built on CasperPortal infrastructure so your marketing doesn’t just look active — it creates conversations, captures leads, and pushes prospects toward action.</p>
+<p class="lede">FBK Marketing is a fulfillment-first, done-for-you social media system for business owners and operators who cannot afford inconsistency. Owned and operated by RAIBRO LLC. Built on CasperPortal infrastructure so your marketing doesn’t just look active — it creates conversations, captures leads, and pushes prospects toward action.</p>
 <p class="ctas">${btn("Get Started at $1,990/month", "/get-started")}${btn("Why This Works", "/why-social-media-fulfillment", "ghost")}</p>
 <p class="tags"><span>Built for busy operators.</span><span>Remote service · United States.</span><span>Local relevance: Georgetown MA.</span></p>
 </div>
