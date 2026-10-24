@@ -13,10 +13,24 @@ export const OUT = fileURLToPath(new URL("../dist/", import.meta.url));
 export const TODAY = new Date().toISOString().slice(0, 10);
 
 // ── Embeds kept from the live GoHighLevel / LeadConnector account (see README › Forms and embeds) ──
-// $1,990/mo order form (GHL funnel "$1990 SOCIAL MEDIA", step page p872M5Fx3lpbrxpAPJE3, served today at / and /get-started).
-// When fbkmarketing.com moves to GitHub Pages the funnel can no longer be served from this domain, so /get-started frames the
-// same funnel page from GHL. Recommended: connect a subdomain (e.g. order.fbkmarketing.com) to that funnel in GHL and put its URL here.
-export const ORDER_URL = "https://sites.leadconnectorhq.com/preview/p872M5Fx3lpbrxpAPJE3";
+// $1,990/mo order form: funnel "$1990 SOCIAL MEDIA" (location DNB14sOqM0GayjGjxxSy), step path /signup,
+// page p872M5Fx3lpbrxpAPJE3. That funnel is still assigned to fbkmarketing.com in HighLevel, and this host
+// is now the website, so /get-started cannot frame it from here. order.fbkmarketing.com does not resolve.
+// ORDER_URL must be the published https step once that domain is attached. Never a /preview/ link.
+function productionOrderUrl() {
+  const raw = (process.env.ORDER_URL || "").trim();
+  if (!raw) return "";
+  let url;
+  try { url = new URL(raw); }
+  catch { throw new Error(`ORDER_URL is not a valid URL (${raw}). Use the published https funnel step. See .env.example.`); }
+  const host = url.hostname.toLowerCase();
+  const path = decodeURIComponent(url.pathname).toLowerCase();
+  if (url.protocol !== "https:" || url.username || url.password) throw new Error("ORDER_URL must be an https URL with no username or password.");
+  if (host === "fbkmarketing.com" || host === "www.fbkmarketing.com") throw new Error("ORDER_URL cannot be fbkmarketing.com. That host is this website, not the HighLevel funnel.");
+  if (path.includes("/preview/") || /(^|\.)preview\./.test(host)) throw new Error("ORDER_URL must be the published production funnel, not a GoHighLevel preview link.");
+  return url.href;
+}
+export const ORDER_URL = productionOrderUrl();
 export const FORM = (id) => `https://link.casperportal.net/widget/form/${id}`;
 export const SURVEY = (id) => `https://link.casperportal.net/widget/survey/${id}`;
 export const FORMS = {
@@ -74,8 +88,8 @@ export function page({ path, title, desc, body, schema = [], crumbs, noindex = f
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)}</title><meta name="description" content="${esc(desc)}"><link rel="canonical" href="${url}">
 <meta name="robots" content="${noindex ? "noindex, follow" : "index, follow, max-image-preview:large, max-snippet:-1"}">
-<meta property="og:type" content="website"><meta property="og:site_name" content="${NAME}"><meta property="og:locale" content="en_US"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:url" content="${url}"><meta property="og:image" content="${ogImage}"><meta property="og:image:alt" content="FBK Marketing logo">
-<meta name="twitter:card" content="summary"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(desc)}"><meta name="twitter:image" content="${ogImage}">
+<meta property="og:type" content="website"><meta property="og:site_name" content="${NAME}"><meta property="og:locale" content="en_US"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:url" content="${url}"><meta property="og:image" content="${ogImage}"><meta property="og:image:alt" content="FBK Marketing logo">${ogImage === LOGO ? `<meta property="og:image:width" content="512"><meta property="og:image:height" content="512"><meta property="og:image:type" content="image/png">` : ""}
+<meta name="twitter:card" content="summary"><meta name="twitter:url" content="${url}"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(desc)}"><meta name="twitter:image" content="${ogImage}">
 <meta name="theme-color" content="#0E0C32"><link rel="icon" href="/favicon.png" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <link rel="stylesheet" href="/assets/site.css?v=${TODAY}">
 ${schemas.map(ld).join("")}

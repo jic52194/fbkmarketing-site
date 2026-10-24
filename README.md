@@ -39,17 +39,26 @@ These redirects use a meta refresh plus a canonical tag and are noindex:
 ## Forms and embeds (all reused from the live GHL / LeadConnector account)
 | Where | Embed | Goes to |
 |---|---|---|
-| `/get-started` | GHL funnel page `p872M5Fx3lpbrxpAPJE3` (funnel "$1990 SOCIAL MEDIA", product "$1990 Per Month Social Media"), framed from `https://sites.leadconnectorhq.com/preview/p872M5Fx3lpbrxpAPJE3` | The GHL order form and Stripe payment, then the thank-you and onboarding steps |
+| `/get-started` | Published HighLevel order step from `ORDER_URL`. Funnel "$1990 SOCIAL MEDIA", step path `/signup`, page `p872M5Fx3lpbrxpAPJE3`, product "$1990 Per Month Social Media". A `/preview/` URL is rejected and is not used when `ORDER_URL` is unset. | The order form and payment, then the thank-you and onboarding steps |
 | `/contact` | Form `evHxONGnDNzukyINPQ1i` "CONTACT US - FBK MARKETING" via `link.casperportal.net/widget/form/…` | A GHL contact in the FBK sub-account (location `DNB14sOqM0GayjGjxxSy`) |
 | `/join` | Form `zMor6EzYVDY0kwiOBg6W` (affiliate sign-up; on the live site it opened as a pop-up) | GHL, then the affiliate survey |
 | `/fbk-signed-up-survey` | Form `RJsQdEThq5ER5msGXBIZ` "FBK- ONBOARDING FORM" | GHL |
 | `/affiliate-survey` | Survey `IJXP5wdeMmeZ69ItyvRW` | GHL |
 | All pages except checkout and funnel steps | LeadConnector chat widget `66d03e49f0610d7630c281dd` | GHL conversations |
 
-**Order form, action needed:** after DNS moves to GitHub Pages, GHL can no longer serve the funnel on fbkmarketing.com.
-- Today `/get-started` frames the funnel's GHL preview URL.
-- Before going live, test one real order through it.
-- Better: connect a subdomain such as `order.fbkmarketing.com` to that funnel in GHL, then set `ORDER_URL` in `scripts/lib.mjs`.
+**Share URL:** [https://fbkmarketing.com/](https://fbkmarketing.com/). Order page: [https://fbkmarketing.com/get-started](https://fbkmarketing.com/get-started). Old funnel path `/signup` redirects there.
+
+**Order form, action needed:** `/get-started` loads the funnel only from the `ORDER_URL` environment variable (GitHub Actions variable of the same name). It does not fall back to a preview link.
+
+TODO: no production order host resolves yet (checked 2026-10-24).
+- `order.fbkmarketing.com` has no DNS record.
+- Funnel "$1990 SOCIAL MEDIA" (`clpvelvEI4HfdXWhV2x8`, location `DNB14sOqM0GayjGjxxSy`) is still on domain `fbkmarketing.com` (domain id `HGfhngrZNIql0IgWv41W`). That hostname is this GitHub Pages site, so it cannot serve the funnel. The order step path on that funnel is `/signup`. Live payments are on.
+- Location `xnATPxw1WHXjbkmAcEQL` (FBK MARKETING) does not contain this funnel. Its published site is `kim.fbkmarketing.com` (website "Kim at FBK Marketing": `/linktree`, `/schedule`, `/contact`, `/learn-more`, domain id `Df6RnEgnghLOBEaHCWyj`). That is not the $1,990 order form.
+
+Set this before taking orders:
+1. In HighLevel, on the sub-account that owns "$1990 SOCIAL MEDIA", add domain `order.fbkmarketing.com` and attach that funnel to it. Keep the step path `/signup`.
+2. DNS: CNAME `order.fbkmarketing.com` to `sites.ludicrous.cloud` (the target already used by `kim.fbkmarketing.com`). Do not use `brand.ludicrous.cloud`; that is the `links.fbkmarketing.com` shortener.
+3. After `https://order.fbkmarketing.com/signup` loads the order form, set `ORDER_URL` to that exact URL and redeploy. See `.env.example`. Do not use a `sites.leadconnectorhq.com/preview/` URL.
 
 **Not carried over:** the Meta Pixel `341558345430601`. To keep it, add it behind the cookie consent.
 
