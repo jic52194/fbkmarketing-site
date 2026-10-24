@@ -11,8 +11,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
-      - run: npm ci          
+      - run: npm ci
       - run: npm run build
+        env:
+          # Repository variable. Empty until the production funnel host exists. Never a /preview/ URL.
+          ORDER_URL: ${{ vars.ORDER_URL }}
       - uses: actions/upload-pages-artifact@v3
         with: { path: dist }
       - name: IndexNow ping

@@ -113,7 +113,7 @@ for (const k of Object.keys(CONCERN)) templatePage(k, CONCERN[k], ["Why Fulfillm
 {
   const p = C["why-social-media-fulfillment"];
   const body = `<section class="hero light"><div class="wrap narrow"><h1>${esc(p.h1)}</h1><p class="lede">This page is for business owners deciding whether to hand off social media: it covers the twelve most common concerns and how FBK Marketing’s done-for-you social media fulfillment addresses each one.</p></div></section>
-<section class="sec"><div class="wrap"><div class="cards c3">${p.cards.map((c) => `<div class="card"><h2 class="h3"><a href="${c.href}">${esc(c.h2)}</a></h2><p>${esc(c.p)}</p><p class="more"><a href="${c.href}" aria-label="Learn more: ${esc(c.h2)}">Learn More</a> · <a href="/get-started">Get Started</a></p></div>`).join("")}</div></div></section>
+<section class="sec"><div class="wrap"><div class="cards c3">${p.cards.map((c) => `<div class="card"><h2 class="h3"><a href="${c.href}">${esc(c.h2)}</a></h2><p>${esc(c.p)}</p><p class="more"><a href="${c.href}" aria-label="Learn more: ${esc(c.h2)}">Learn More</a> · <a href="${PRIMARY[1]}" data-track="${esc(PRIMARY[0])} [card]">${esc(PRIMARY[0])}</a></p></div>`).join("")}</div></div></section>
 <section class="sec band"><div class="wrap narrow"><h2>${esc(p.closing.h2)}</h2><p>${esc(p.closing.p)}</p><p class="ctas">${btn(...PRIMARY, "", "closing")}${btn("Read the FAQ", "/faq", "ghost light", "closing")}</p>${TRUST}</div></section>`;
   write("/why-social-media-fulfillment", page({ path: "/why-social-media-fulfillment", title: "Why Businesses Need Social Media Fulfillment | FBK Marketing",
     desc: "Why consistent, done-for-you social content matters and how FBK Marketing keeps your brand active and credible.", body, crumbs: [["Home", "/"], ["Why Fulfillment", "/why-social-media-fulfillment"]] }));
@@ -142,7 +142,12 @@ write("/contact", page({ path: "/contact", title: "Contact FBK Marketing | Done-
 <p>Ready to start? Go to <a href="/get-started">Get Started</a>. Have a question first? Read the <a href="/faq">FAQ</a>, see <a href="/why-choose-fbkmarketing">what sets us apart</a>, or review the <a href="/cancellation-policy">cancellation policy</a>.</p></div>
 </div></section>` }));
 
-// ── Order form ($1,990/month, GHL funnel page framed from GHL; same form and payment as today) ──
+// ── Order form ($1,990/month). The iframe is the published funnel step from ORDER_URL, never a preview link. ──
+const orderForm = ORDER_URL
+  ? `<div class="embed order"><iframe src="${esc(ORDER_URL)}" title="FBK Marketing secure order form" style="min-height:1250px" allow="payment"></iframe></div>
+<p class="center small">* 100% Secure &amp; Safe Payments * · Trouble loading the form? <a href="${esc(ORDER_URL)}" rel="noopener">Open the secure order form</a> or <a href="/contact">contact us</a>.</p>`
+  : `<div class="embed order"><p class="center"><strong>The secure $1,990/month order form is not connected on this deploy.</strong></p>
+<p class="center">Email <a href="mailto:${EMAIL}">${EMAIL}</a> or call <a href="tel:${PHONE_TEL}">${PHONE}</a>, or use the <a href="/contact">contact form</a>. This page loads the order form once the production funnel URL is set.</p></div>`;
 write("/get-started", page({ path: "/get-started", noindex: true, chat: false, title: "Get Started | FBK Marketing",
   desc: "Order FBK Marketing's done-for-you social media content at $1,990/month. Provide your business details for customized content creation.",
   body: `<section class="sec checkout"><div class="wrap narrow">
@@ -151,8 +156,7 @@ write("/get-started", page({ path: "/get-started", noindex: true, chat: false, t
 <h2 class="h3 center">Who is Claiming This Offer?</h2><p class="center">Provide Your Business Details for Customized Content Creation</p>
 <p class="center small">Month-to-month, no long-term contract · cancel with 30 days’ notice · approve every post or choose auto-post.</p>
 <p class="center small">Order: done-for-you social media, $1,990 per month. By ordering you agree to the <a href="/terms-and-conditions">terms and conditions</a>; see also the <a href="/cancellation-policy">cancellation policy</a>.</p>
-<div class="embed order"><iframe src="${ORDER_URL}" title="FBK Marketing secure order form" style="min-height:1250px" allow="payment"></iframe></div>
-<p class="center small">* 100% Secure &amp; Safe Payments * · Trouble loading the form? <a href="${ORDER_URL}" rel="noopener">Open the secure order form</a> or <a href="/contact">contact us</a>.</p>
+${orderForm}
 <p class="center small">Questions first? <a href="/why-social-media-fulfillment">Click to learn more</a>, read the <a href="/faq">FAQ</a> or see <a href="/1990-service-details">what the service includes</a>.</p>
 </div></section>` }));
 
@@ -219,6 +223,7 @@ const LEGACY = {
   "/social-media-fulfillment-faq": "/",              // the landing page now lives at the root
   "/social-media-fulfillment-faq-555433": "/faq",    // old FAQ funnel step (contact form's next step)
   "/request-quote": "/get-started",                  // live: 301 → / (the order form)
+  "/signup": "/get-started",                         // $1990 funnel order step; the funnel no longer serves this host
 };
 for (const [from, to] of Object.entries(LEGACY)) write(from, redirect(to));
 
@@ -231,4 +236,7 @@ writeFileSync(join(OUT, "CNAME"), "fbkmarketing.com\n");
 writeFileSync(join(OUT, ".nojekyll"), "");
 mkdirSync(fileURLToPath(new URL("../data/", import.meta.url)), { recursive: true });
 writeFileSync(fileURLToPath(new URL("../data/urls.txt", import.meta.url)), urls.map(([p]) => SITE + p).join("\n") + "\n");
+const orderPage = readFileSync(join(OUT, "get-started/index.html"), "utf8");
+if (/\/preview\/|sites\.leadconnectorhq\.com/i.test(orderPage)) throw new Error("/get-started still references a GoHighLevel preview URL");
 console.log(`built ${urls.length} indexable pages + ${Object.keys(LEGACY).length} redirects at ${TODAY}`);
+console.log(ORDER_URL ? `order form: ${ORDER_URL}` : "order form: ORDER_URL is not set (preview link is not used)");
